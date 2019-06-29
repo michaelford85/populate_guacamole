@@ -1,22 +1,27 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role takes input variables and populates the AWS Apache Guacamole Bastion Host with Users for Red Hat Linklight workshops, and associated SSH and RDP Connections
+
+GUAC_USERNAME: "{{ vaulted_guac_username }}"
+GUAC_PASSWORD: "{{ vaulted_guac_password }}"
+student_total: 2
+ec2_name_prefix: maf-test-workshop
+domain: rhdemo.io
 
 Requirements
 ------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+A Guacamole Bastion Host must already be running and referenced in your ansible inventory. This role assumes ise of the AWS Marketplace Guacamole Bastion Server: https://aws.amazon.com/marketplace/pp/B06Y67KPD9
 
 Role Variables
 --------------
+GUAC_USERNAME: The administrator username for your Guacamole Server. This is typically `guacadmin`
+GUAC_PASSWORD: The administrator password for your Guacamole Server. For AWS, the default password is the instance ID
+student_total: The total number of users for your Guacamole server. Each user will have the following username: studentX, where X is the number
+ec2_name_prefix: The prefix for your Linklight login url
+domain: The domain for your Linklight login url
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+the entire URL will have the format of studentX.ec2_name_prefix.domain. i.e., student1.test-workshop.rhdemo.io
 
 Example Inventory
 ----------------
