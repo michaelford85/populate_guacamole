@@ -18,15 +18,48 @@ Dependencies
 
 A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
+Example Inventory
+----------------
+
+```
+[guacamole]
+18.205.67.151 ansible_host=18.205.67.151 ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/mford-useast-1-key.pem
+
+```
+
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+```
+---
+- name: Populate Apache Guacamole with Users and Connections
+  hosts: guacamole
+  gather_facts: False
+  vars_files:
+    - ./vars/default_vars.yml
+    - ./vars/guacamole_credentials.yml
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+  tasks:
 
+    - name: Set guacamole_server fact
+      set_fact:
+        guacamole_server: "{{ ansible_host }}"
+
+    - name: Invoke populate_guacamole role
+      include_role:
+        name: populate_guacamole
+      with_sequence: start=1 count="{{ student_total }}"
+
+    - name: Clean Up JSON Files
+      file:
+        path: "{{ playbook_dir }}/{{ item }}"
+        state: absent
+      with_items:
+        - rdp_connection.json
+        - ssh_connection.json
+        - users.json
+      delegate_to: localhost
+```
 License
 -------
 
