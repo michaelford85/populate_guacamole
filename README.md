@@ -1,14 +1,14 @@
-## populate_guacamole
-=========
+populate_guacamole
+--------------
 
 This role takes input variables and populates the AWS Apache Guacamole Bastion Host with Users for Red Hat Linklight workshops, and associated SSH and RDP Connections
 
 
-# Requirements
+Requirements
 ------------
 An Apache Guacamole Bastion Host must already be running and referenced in your ansible inventory. This role assumes use of the AWS Marketplace Guacamole Bastion Server: https://aws.amazon.com/marketplace/pp/B06Y67KPD9
 
-# Role Variables
+Role Variables
 --------------
 `GUAC_USERNAME`: The administrator username for your Guacamole Server. This is typically `guacadmin`.
 
@@ -23,7 +23,7 @@ domain: The domain for your Linklight login url
 
 The entire URL will have the format of studentX.ec2_name_prefix.domain. i.e., `student1.test-workshop.ansible.com`
 
-# Example Inventory
+Example Inventory
 ----------------
 
 ```
@@ -31,7 +31,7 @@ The entire URL will have the format of studentX.ec2_name_prefix.domain. i.e., `s
 18.205.67.151 ansible_host=18.205.67.151 ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/useast-1-key.pem
 
 ```
-# Example Input/Extra Variables
+Example Input/Extra Variables
 ----------------
 ```
 GUAC_USERNAME: guacadmin
@@ -42,7 +42,7 @@ domain: ansible.com
 password: ansible
 ```
 
-# Example Playbook
+Example Playbook
 ----------------
 
 ```
