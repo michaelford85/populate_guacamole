@@ -1,0 +1,97 @@
+---
+# tasks file for populate_guacamole
+
+- name: Generate Admin Auth Token
+  uri:
+    url: "https://{{ guacamole_server }}/guacamole/api/tokens"
+    user: "{{ GUAC_USERNAME }}"
+    password: "{{ GUAC_PASSWORD }}"
+    method: POST
+    force_basic_auth: yes
+    validate_certs: no
+  register: token_output
+
+# - debug:
+#     var: token_output
+
+- set_fact:
+   admin_auth_token: "{{ token_output.json.authToken }}"
+
+# - debug:
+#     var: admin_auth_token
+
+- name: "Generate student{{ item }} User Data"
+  template:
+    src: users.j2
+    dest: "{{ playbook_dir }}/users.json"
+  delegate_to: localhost
+
+
+- name: "Add User student{{item}}"
+  uri:
+    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/users?token={{ admin_auth_token }}"
+    user: "{{ GUAC_USERNAME }}"
+    body_format: json
+    body: "{{ lookup('file', '{{ playbook_dir }}/users.json') }}"
+    method: POST
+    #force_basic_auth: yes
+    validate_certs: no
+
+- name: "Grant CREATE_CONNECTION Permissions to student{{item}}"
+  uri:
+    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/users/student{{ item }}/permissions?token={{ admin_auth_token }}"
+    user: "{{ GUAC_USERNAME }}"
+    body_format: json
+    body: "{{ lookup('file','grant_permissions.json') }}"
+    method: PATCH
+    status_code: 204
+    #force_basic_auth: yes
+    validate_certs: no
+
+- name: "Generate student{{ item }} Auth Token"
+  uri:
+    url: "https://{{ guacamole_server }}/guacamole/api/tokens"
+    user: "student{{ item }}"
+    password: ansible
+    method: POST
+    force_basic_auth: yes
+    validate_certs: no
+  register: student_token_output
+
+# - debug:
+#     var: student_token_output
+
+- set_fact:
+   student_auth_token: "{{ student_token_output.json.authToken }}"
+
+- name: "Generate student{{ item }} SSH Connection Data"
+  template:
+    src: ssh_connection.j2
+    dest: "{{ playbook_dir }}/ssh_connection.json"
+  delegate_to: localhost
+
+- name: "Add student{{ item }} SSH Connection"
+  uri:
+    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/connections?token={{ student_auth_token }}"
+    user: "student{{ item }}"
+    body_format: json
+    body: "{{ lookup('file','{{ playbook_dir }}/ssh_connection.json') }}"
+    method: POST
+    #force_basic_auth: yes
+    validate_certs: no
+
+- name: "Generate student{{ item }} RDP Connection Data"
+  template:
+    src: rdp_connection.j2
+    dest: "{{ playbook_dir }}/rdp_connection.json"
+  delegate_to: localhost
+
+- name: "Add student{{ item }} RDP Connection"
+  uri:
+    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/connections?token={{ student_auth_token }}"
+    user: "student{{ item }}"
+    body_format: json
+    body: "{{ lookup('file','{{ playbook_dir }}/rdp_connection.json') }}"
+    method: POST
+    #force_basic_auth: yes
+    validate_certs: no

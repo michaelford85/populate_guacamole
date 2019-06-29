@@ -1,0 +1,40 @@
+{
+    "name": "student{{ item }} SSH",
+    "protocol": "ssh",
+    "attributes": {
+        "max-connections": "",
+        "max-connections-per-user": ""
+    },
+    "activeConnections": 0,
+    "parameters": {
+        "port": "22",
+        "enable-menu-animations": "true",
+        "enable-desktop-composition": "true",
+        "hostname": "student{{ item }}.{{ec2_name_prefix}}.{{ domain }}",
+        "color-depth": "32",
+        "enable-font-smoothing": "true",
+        "ignore-cert": "true",
+        "enable-drive": "true",
+        "enable-full-window-drag": "true",
+        "security": "any",
+        "password": "ansible",
+        "enable-wallpaper": "true",
+        "create-drive-path": "true",
+        "enable-theming": "true",
+        "username": "student{{ item }}",
+        "console": "true",
+        "disable-audio": "true",
+        "domain": "",
+        "drive-path": "/var/tmp",
+        "disable-auth": "",
+        "server-layout": "",
+        "width": "",
+        "height": "",
+        "dpi": "",
+        "console-audio": "",
+        "enable-printing": "",
+        "preconnection-id": "",
+        "enable-sftp": "",
+        "sftp-port": ""
+    }
+}
