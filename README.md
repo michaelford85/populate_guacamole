@@ -11,9 +11,11 @@ A Guacamole Bastion Host must already be running and referenced in your ansible 
 Role Variables
 --------------
 `GUAC_USERNAME`: The administrator username for your Guacamole Server. This is typically `guacadmin`
+
 `GUAC_PASSWORD`: The administrator password for your Guacamole Server. For AWS, the default password is the instance ID
 
 `student_total`: The total number of users for your Guacamole server. Each user will have the following username: studentX, where X is the number
+
 `ec2_name_prefix`: The prefix for your Linklight login url
 domain: The domain for your Linklight login url
 
