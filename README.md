@@ -12,7 +12,7 @@ Role Variables
 --------------
 `GUAC_USERNAME`: The administrator username for your Guacamole Server. This is typically `guacadmin`.
 
-`GUAC_PASSWORD`: The administrator password for your Guacamole Server. For AWS, the default password is the instance ID
+`GUAC_PASSWORD`: The administrator password for your Guacamole Server. For AWS, the default password is the ***instance ID***
 
 `student_total`: The total number of users for your Guacamole server. Each user will have the following username: studentX, where X is the number
 
@@ -38,7 +38,7 @@ GUAC_USERNAME: guacadmin
 GUAC_PASSWORD: password
 student_total: 20
 ec2_name_prefix: test-workshop
-domain: ansible.com
+domain: rhdemo.io
 password: ansible
 ```
 
@@ -72,3 +72,19 @@ Example Playbook
         - users.json
       delegate_to: localhost
 ```
+Playbook Run Results
+----------------
+
+As a result of running the example playbook with the example extra variables above:
+
+1) Logging in as `guacadmin` will reveal that all Users and their associated SSH and RDP Connections are now present.
+
+![Guacamole Admin View](images/guacadmin_view.png)
+
+2) Logging in as a particular student will show that said student will only be able to access their particular connections (this is what we want to prevent a student from logging into his/her neighbor's workbench).
+
+![Student 11 View](images/student11_view.png)
+
+3) Under the settings, you will see the details for the connection have been populated per variable inputs.
+
+![RDP Connection Details](images/rdp_details.png)
