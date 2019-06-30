@@ -79,12 +79,12 @@ As a result of running the example playbook with the example extra variables abo
 
 1) Logging in as `guacadmin` will reveal that all Users and their associated SSH and RDP Connections are now present.
 
-![Guacamole Admin View](images/guacadmin_view.png)
+![Guacamole Admin View](images/guacadmin_view.jpg)
 
 2) Logging in as a particular student will show that said student will only be able to access their particular connections (this is what we want to prevent a student from logging into his/her neighbor's workbench).
 
-![Student 11 View](images/student11_view.png)
+![Student 11 View](images/student11_view.jpg)
 
 3) Under the settings, you will see the details for the connection have been populated per variable inputs.
 
-![RDP Connection Details](images/rdp_details.png)
+![RDP Connection Details](images/rdp_details.jpg)
