@@ -14,7 +14,8 @@
 # - debug:
 #     var: token_output
 
-- set_fact:
+- name: Set admin_auth_token fact
+  set_fact:
    admin_auth_token: "{{ token_output.json.authToken }}"
 
 # - debug:
@@ -61,7 +62,8 @@
 # - debug:
 #     var: student_token_output
 
-- set_fact:
+- name: Set student_auth_token fact
+  set_fact:
    student_auth_token: "{{ student_token_output.json.authToken }}"
 
 - name: "Generate student{{ item }} SSH Connection Data"
