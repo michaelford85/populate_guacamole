@@ -3,7 +3,7 @@
 
 - name: Generate Admin Auth Token
   uri:
-    url: "https://{{ guacamole_server }}/guacamole/api/tokens"
+    url: "https://{{ guacamole_server }}/api/tokens"
     user: "{{ GUAC_USERNAME }}"
     password: "{{ GUAC_PASSWORD }}"
     method: POST
@@ -30,7 +30,7 @@
 
 - name: "Add User student{{item}}"
   uri:
-    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/users?token={{ admin_auth_token }}"
+    url: "https://{{ guacamole_server }}/api/session/data/mysql/users?token={{ admin_auth_token }}"
     user: "{{ GUAC_USERNAME }}"
     body_format: json
     body: "{{ lookup('file', '{{ playbook_dir }}/users.json') }}"
@@ -40,7 +40,7 @@
 
 - name: "Grant CREATE_CONNECTION Permissions to student{{item}}"
   uri:
-    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/users/student{{ item }}/permissions?token={{ admin_auth_token }}"
+    url: "https://{{ guacamole_server }}/api/session/data/mysql/users/student{{ item }}/permissions?token={{ admin_auth_token }}"
     user: "{{ GUAC_USERNAME }}"
     body_format: json
     body: "{{ lookup('file','grant_permissions.json') }}"
@@ -51,7 +51,7 @@
 
 - name: "Generate student{{ item }} Auth Token"
   uri:
-    url: "https://{{ guacamole_server }}/guacamole/api/tokens"
+    url: "https://{{ guacamole_server }}/api/tokens"
     user: "student{{ item }}"
     password: ansible
     method: POST
@@ -74,7 +74,7 @@
 
 - name: "Add student{{ item }} SSH Connection"
   uri:
-    url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/connections?token={{ student_auth_token }}"
+    url: "https://{{ guacamole_server }}/api/session/data/mysql/connections?token={{ student_auth_token }}"
     user: "student{{ item }}"
     body_format: json
     body: "{{ lookup('file','{{ playbook_dir }}/ssh_connection.json') }}"
@@ -90,7 +90,7 @@
 #
 # - name: "Add student{{ item }} RDP Connection"
 #   uri:
-#     url: "https://{{ guacamole_server }}/guacamole/api/session/data/mysql/connections?token={{ student_auth_token }}"
+#     url: "https://{{ guacamole_server }}/api/session/data/mysql/connections?token={{ student_auth_token }}"
 #     user: "student{{ item }}"
 #     body_format: json
 #     body: "{{ lookup('file','{{ playbook_dir }}/rdp_connection.json') }}"
