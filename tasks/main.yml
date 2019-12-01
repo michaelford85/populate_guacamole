@@ -82,18 +82,18 @@
     #force_basic_auth: yes
     validate_certs: no
 
-# - name: "Generate student{{ item }} RDP Connection Data"
-#   template:
-#     src: rdp_connection.j2
-#     dest: "{{ playbook_dir }}/rdp_connection.json"
-#   delegate_to: localhost
-#
-# - name: "Add student{{ item }} RDP Connection"
-#   uri:
-#     url: "https://{{ guacamole_server }}/api/session/data/mysql/connections?token={{ student_auth_token }}"
-#     user: "student{{ item }}"
-#     body_format: json
-#     body: "{{ lookup('file','{{ playbook_dir }}/rdp_connection.json') }}"
-#     method: POST
-#     #force_basic_auth: yes
-#     validate_certs: no
+- name: "Generate student{{ item }} RDP Connection Data"
+  template:
+    src: rdp_connection.j2
+    dest: "{{ playbook_dir }}/rdp_connection.json"
+  delegate_to: localhost
+
+- name: "Add student{{ item }} RDP Connection"
+  uri:
+    url: "https://{{ guacamole_server }}/api/session/data/mysql/connections?token={{ student_auth_token }}"
+    user: "student{{ item }}"
+    body_format: json
+    body: "{{ lookup('file','{{ playbook_dir }}/rdp_connection.json') }}"
+    method: POST
+    #force_basic_auth: yes
+    validate_certs: no
